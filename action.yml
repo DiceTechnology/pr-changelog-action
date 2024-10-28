@@ -16,6 +16,9 @@ inputs:
   initial_version:
     description: 'Version number to use if no previous releases found'
     default: '0.0.0'
+  exit_on_skip:
+    description: 'Action error thrown behaviour if there is no version bumped found'
+    default: 'false'
 outputs:
   changelog:
     description: 'Changelog read from PR description'

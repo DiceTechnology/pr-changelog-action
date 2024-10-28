@@ -32,6 +32,7 @@ const bumpVersion = (changelog, oldVersion) => {
 const run = async () => {
   try {
     const githubToken = core.getInput('github_token', { required: true });
+    const shouldThrowIfNoVersionBump = core.getInput('exit_on_skip', { required: true });
     const octokit = github.getOctokit(githubToken);
 
     const credentials = {
@@ -57,7 +58,8 @@ const run = async () => {
     core.info(`version: ${oldVersion} => ${newVersion}`);
 
     if (oldVersion === newVersion) {
-      core.notice('No version change');
+      if (shouldThrowIfNoVersionBump === 'true') throw ('No version change')
+      else core.notice('No version change');
       return true;
     }
 
