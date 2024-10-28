@@ -56,7 +56,10 @@ const run = async () => {
 
     core.info(`version: ${oldVersion} => ${newVersion}`);
 
-    if (oldVersion === newVersion) core.notice('No version change');
+    if (oldVersion === newVersion) {
+      core.notice('No version change');
+      return true;
+    }
 
     core.setOutput('changelog', changelog);
     core.setOutput('version', newVersion);
