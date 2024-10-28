@@ -49,15 +49,15 @@ const run = async () => {
     const endIndex = changelog.search('```');
     changelog = changelog.slice(0, endIndex);
 
-    if (!changelog.trim()) throw 'No changelog found';
-    
+    if (!changelog.trim()) throw ('No changelog found');
+
     const oldVersion = (tag_name || core.getInput('initial_version'));
     const newVersion = bumpVersion(changelog, oldVersion);
-    
+
     core.info(`version: ${oldVersion} => ${newVersion}`);
 
-    if (oldVersion === newVersion) throw 'No version change';
-    
+    if (oldVersion === newVersion) core.notice('No version change');
+
     core.setOutput('changelog', changelog);
     core.setOutput('version', newVersion);
   } catch (error) {
