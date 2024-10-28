@@ -32649,6 +32649,8 @@ const bumpVersion = (changelog, oldVersion) => {
     }
   });
   switch (versionBump) {
+    case 'skip':
+      break;
     case 'minor':
       version[1] = Number(version[1]) + 1;
       version[2] = 0;
@@ -32686,11 +32688,11 @@ const run = async () => {
     const newVersion = bumpVersion(changelog, oldVersion);
     
     core.info(`version: ${oldVersion} => ${newVersion}`);
-
-    if (oldVersion === newVersion) throw 'No version change';
+    const versionChanged = oldVersion !== newVersion;
     
     core.setOutput('changelog', changelog);
     core.setOutput('version', newVersion);
+    core.setOutput('versionChanged', versionChanged);
   } catch (error) {
     core.setFailed(error.message);
   }
