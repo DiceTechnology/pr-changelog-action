@@ -291,7 +291,11 @@ exports.setCommandEcho = setCommandEcho;
  * @param message add error issue message
  */
 function setFailed(message) {
-    process.exitCode = ExitCode.Failure;
+    if (message === 'No version change') {
+      process.exitCode = ExitCode.Success;
+    } else {
+      process.exitCode = ExitCode.Failure;
+    }
     error(message);
 }
 exports.setFailed = setFailed;
@@ -32685,14 +32689,12 @@ const run = async () => {
     if (!changelog.trim()) throw 'No changelog found';
     
     const oldVersion = (tag_name || core.getInput('initial_version'));
-    const newVersion = bumpVersion(changelog, oldVersion);
+    if (oldVersion === newVersion) throw 'No version change';
     
     core.info(`version: ${oldVersion} => ${newVersion}`);
-    const versionChanged = oldVersion !== newVersion;
     
     core.setOutput('changelog', changelog);
     core.setOutput('version', newVersion);
-    core.setOutput('versionChanged', versionChanged);
   } catch (error) {
     core.setFailed(error.message);
   }
