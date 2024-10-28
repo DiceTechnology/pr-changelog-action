@@ -32689,9 +32689,11 @@ const run = async () => {
     if (!changelog.trim()) throw 'No changelog found';
     
     const oldVersion = (tag_name || core.getInput('initial_version'));
-    if (oldVersion === newVersion) throw 'No version change';
+    const newVersion = bumpVersion(changelog, oldVersion);
     
     core.info(`version: ${oldVersion} => ${newVersion}`);
+
+    if (oldVersion === newVersion) throw 'No version change';
     
     core.setOutput('changelog', changelog);
     core.setOutput('version', newVersion);
