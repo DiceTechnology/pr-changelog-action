@@ -56,8 +56,8 @@ const run = async () => {
     const newVersion = bumpVersion(changelog, oldVersion);
 
     core.info(`version: ${oldVersion} => ${newVersion}`);
-    const hasVersionChanged = oldVersion === newVersion
-    if (hasVersionChanged) {
+    const hasVersionChanged = oldVersion !== newVersion:
+    if (!hasVersionChanged) {
       if (shouldThrowIfNoVersionBump === 'true') throw ('No version change')
       else core.notice('No version change');
       return true;
