@@ -51,7 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Read PR description
-        uses: DiceTechnology/pr-changelog-action@main
+        uses: DiceTechnology/pr-changelog-action@v2
         with:
           GITHUB_TOKEN: ${{ secrets.github_token }}
           destination_branch: develop
@@ -79,7 +79,7 @@ jobs:
           ref: develop
           token: ${{ secrets.GH_MACHINE_TOKEN }}
       - name: Read PR description
-        uses: DiceTechnology/pr-changelog-action@1.0.8
+        uses: DiceTechnology/pr-changelog-action@v2
         id: pr-changelog
         with:
           GITHUB_TOKEN: ${{ secrets.GH_MACHINE_TOKEN }}
