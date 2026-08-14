@@ -16,6 +16,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
       - name: setup Node
         uses: actions/setup-node@v7
         with:
@@ -24,10 +26,18 @@ jobs:
       - name: package-version
         run: node -p -e '`PACKAGE_VERSION=${require("./package.json").version}`' >> $GITHUB_ENV
       - name: package-version-to-git-tag
-        uses: pkgdeps/git-tag-action@v2
+        uses: pkgdeps/git-tag-action@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           github_repo: ${{ github.repository }}
           version: ${{ env.PACKAGE_VERSION }}
           git_commit_sha: ${{ github.sha }}
           git_tag_prefix: "v"
+      # Consumers pin the floating major tag (e.g. `@v1`), so point it at this
+      # release. Without this the major tag stays on the previous commit and
+      # nobody picks up the new version.
+      - name: move major tag
+        run: |
+          MAJOR="v${PACKAGE_VERSION%%.*}"
+          git tag -f "$MAJOR" "$GITHUB_SHA"
+          git push -f origin "refs/tags/$MAJOR"
